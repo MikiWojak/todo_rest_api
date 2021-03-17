@@ -1,7 +1,8 @@
-#TODO REST API - how to use
+# TODO REST API - how to use
 
-__General__
+## General
+- `git clone` - Clone the repository to your computer
 
-__Backend__
+## Backend
 
-__Frontend__
+## Frontend
