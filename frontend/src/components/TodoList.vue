@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todos"  :key="todo.id" class="todo-item">
+    <div v-for="(todo, index) in todosFiltered"  :key="todo.id" class="todo-item">
       <div class="todo-item-left">
         <input type="checkbox" v-model="todo.done">
         <div v-if="!todo.editing" class="todo-item-label" :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
@@ -14,6 +14,32 @@
         &times;
       </div>
     </div>
+
+    <div class="extra-container">
+      <div>
+        <label>
+          <input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos">
+          Check All
+        </label>
+      </div>
+
+      <div>
+        {{ remaining }} items left
+      </div>
+    </div>
+
+    <div class="extra-container">
+     <div>
+       <button :class="{ active: filter == 'all' }" @click="filter = 'all'">All</button>
+       <button :class="{ active: filter == 'active' }" @click="filter = 'active'">Active</button>
+       <button :class="{ active: filter == 'done' }" @click="filter = 'done'">Completed</button>
+     </div>
+
+     <div>
+       Clear Done
+     </div>
+
+   </div>
   </div>
 </template>
 
@@ -26,6 +52,7 @@ export default {
       newTodo: '',
       idForTodo: 3,
       beforeEditCache: '',
+      filter: 'all',
 
       todos: [
         {
@@ -41,6 +68,28 @@ export default {
           'editing': false
         }
       ]
+    }
+  },
+
+  computed: {
+    remaining() {
+      return this.todos.filter(todo => !todo.done).length;
+    },
+
+    anyRemaining() {
+      return this.remaining != 0;
+    },
+
+    todosFiltered() {
+      if(this.filter == 'all') {
+        return this.todos;
+      } else if(this.filter == 'active') {
+        return this.todos.filter(todo => !todo.done);
+      } else if(this.filter == 'done') {
+        return this.todos.filter(todo => todo.done);
+      }
+
+      return this.todos;
     }
   },
 
@@ -91,6 +140,10 @@ export default {
 
     removeTodo(index) {
       this.todos.splice(index, 1);
+    },
+
+    checkAllTodos() {
+      this.todos.forEach((todo) => todo.done = event.target.checked);
     }
   },
 }
@@ -153,5 +206,33 @@ export default {
   .completed {
     text-decoration: line-through;
     color: grey;
+  }
+
+  .extra-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    border-top: 1px solid lightgrey;
+    padding-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    background-color: white;
+    appearance: none;
+  }
+
+  button:hover {
+    background: lightgreen;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  .active {
+    background: lightgreen;
   }
 </style>
