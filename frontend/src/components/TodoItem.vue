@@ -1,14 +1,14 @@
 <template>
   <div class="todo-item">
     <div class="todo-item-left">
-      <input type="checkbox" v-model="done">
+      <input type="checkbox" v-model="done" @change="doneEdit">
       <div v-if="!editing" class="todo-item-label" :class="{ completed: done }" @dblclick="editTodo">
         {{ title }}
       </div>
       <input v-else class="todo-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
     </div>
 
-    <div class="remove-item" @click="removeTodo(index)">
+    <div class="remove-item" @click="removeTodo(todo.id)">
       &times;
     </div>
   </div>
@@ -24,8 +24,8 @@ export default {
       required: true
     },
 
-    index: {
-      type: Number,
+    checkAll: {
+      type: Boolean,
       required: true
     }
   },
@@ -37,6 +37,36 @@ export default {
       'done': this.todo.done,
       'editing': this.todo.editing,
       'beforeEditCache': ''
+    }
+  },
+
+  methods: {
+    removeTodo(id) {
+      this.$emit('removedTodo', id);
+    },
+
+    editTodo() {
+      this.beforeEditCache = this.title;
+      this.editing = true;
+    },
+
+    doneEdit() {
+      if(this.title.trim() == '') {
+        this.title = this.beforeEditCache;
+      }
+
+      this.editing = false;
+      this.$emit('finishedEdit', {
+        'id': this.id,
+        'title': this.title,
+        'done': this.done,
+        'editing': this.editing
+      });
+    },
+
+    cancelEdit() {
+      this.title = this.beforeEditCache;
+      this.editing = false;
     }
   }
 }

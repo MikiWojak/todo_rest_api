@@ -1,8 +1,8 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="(todo, index) in todosFiltered"  :key="todo.id" :todo="todo" :index="index">
-      
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
+
     </todo-item>
 
     <div class="extra-container">
@@ -140,7 +140,8 @@ export default {
       todo.editing = false;
     },
 
-    removeTodo(index) {
+    removeTodo(id) {
+      const index = this.todos.findIndex((item) => item.id == id);
       this.todos.splice(index, 1);
     },
 
@@ -150,8 +151,13 @@ export default {
 
     clearDone() {
       this.todos = this.todos.filter(todo => !todo.done);
+    },
+
+    finishedEdit(data) {
+      const index = this.todos.findIndex((item) => item.id == data.id);
+      this.todos.splice(index, 1, data);
     }
-  },
+  }
 }
 </script>
 
