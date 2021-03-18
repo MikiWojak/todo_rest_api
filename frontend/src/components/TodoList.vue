@@ -36,7 +36,9 @@
      </div>
 
      <div>
-       Clear Done
+       <button v-if="showClearDoneButton" @click="clearDone()">
+         Clear Done
+       </button>
      </div>
 
    </div>
@@ -90,6 +92,10 @@ export default {
       }
 
       return this.todos;
+    },
+
+    showClearDoneButton() {
+      return this.todos.filter(todo => todo.done).length > 0;
     }
   },
 
@@ -144,6 +150,10 @@ export default {
 
     checkAllTodos() {
       this.todos.forEach((todo) => todo.done = event.target.checked);
+    },
+
+    clearDone() {
+      this.todos = this.todos.filter(todo => !todo.done);
     }
   },
 }
