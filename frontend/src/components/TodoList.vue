@@ -167,7 +167,7 @@ export default {
     margin-bottom: 16px;
   }
 
-  &:focus {
+  .todo-input:focus {
     outline: 0;
   }
 
@@ -184,7 +184,7 @@ export default {
 
   }
 
-  &:hover {
+  .remove-item:hover {
     color: black;
   }
 
