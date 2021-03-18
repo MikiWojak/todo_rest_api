@@ -1,19 +1,9 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todosFiltered"  :key="todo.id" class="todo-item">
-      <div class="todo-item-left">
-        <input type="checkbox" v-model="todo.done">
-        <div v-if="!todo.editing" class="todo-item-label" :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
-          {{ todo.title }}
-        </div>
-        <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
-      </div>
-
-      <div class="remove-item" @click="removeTodo(index)">
-        &times;
-      </div>
-    </div>
+    <todo-item v-for="(todo, index) in todosFiltered"  :key="todo.id" :todo="todo" :index="index">
+      
+    </todo-item>
 
     <div class="extra-container">
       <div>
@@ -46,8 +36,14 @@
 </template>
 
 <script>
+import TodoItem from './TodoItem'
+
 export default {
   name: 'todo-list',
+
+  components: {
+    TodoItem
+  },
 
   data() {
     return {
