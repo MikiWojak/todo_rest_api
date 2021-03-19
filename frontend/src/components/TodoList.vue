@@ -8,7 +8,7 @@
     <div class="extra-container">
       <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
 
-      <todo-items-remaining :remaining="remaining"></todo-items-remaining>
+      <todo-items-remaining></todo-items-remaining>
     </div>
 
     <div class="extra-container">
@@ -68,7 +68,7 @@ export default {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$on('filterChanged', (filter) => this.filter = filter);
+    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
     eventBus.$on('clearDoneTodos', () => this.clearDone());
   },
 
@@ -76,33 +76,25 @@ export default {
     eventBus.$off('removedTodo', (index) => this.removeTodo(index));
     eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$off('filterChanged', (filter) => this.filter = filter);
+    eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter);
     eventBus.$off('clearDoneTodos', () => this.clearDone());
   },
 
   computed: {
     remaining() {
-      return this.todos.filter(todo => !todo.done).length;
+      return this.$store.getters.remaining;
     },
 
     anyRemaining() {
-      return this.remaining != 0;
+      return this.$store.getters.anyRemaining;
     },
 
     todosFiltered() {
-      if(this.filter == 'all') {
-        return this.todos;
-      } else if(this.filter == 'active') {
-        return this.todos.filter(todo => !todo.done);
-      } else if(this.filter == 'done') {
-        return this.todos.filter(todo => todo.done);
-      }
-
-      return this.todos;
+      return this.$store.getters.todosFiltered;
     },
 
     showClearDoneButton() {
-      return this.todos.filter(todo => todo.done).length > 0;
+      return this.$store.getters.showClearDoneButton;
     }
   },
 
@@ -113,7 +105,7 @@ export default {
         return;
       }
 
-      this.todos.push({
+      this.$store.state.todos.push({
         id: this.idForTodo,
         title: this.newTodo,
         done: false,
@@ -125,21 +117,21 @@ export default {
     },
 
     removeTodo(id) {
-      const index = this.todos.findIndex((item) => item.id == id);
-      this.todos.splice(index, 1);
+      const index = this.$store.state.todos.findIndex((item) => item.id == id);
+      this.$store.state.todos.splice(index, 1);
     },
 
     checkAllTodos() {
-      this.todos.forEach((todo) => todo.done = event.target.checked);
+      this.$store.state.todos.forEach((todo) => todo.done = event.target.checked);
     },
 
     clearDone() {
-      this.todos = this.todos.filter(todo => !todo.done);
+      this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.done);
     },
 
     finishedEdit(data) {
-      const index = this.todos.findIndex((item) => item.id == data.id);
-      this.todos.splice(index, 1, data);
+      const index = this.$store.state.todos.findIndex((item) => item.id == data.id);
+      this.$store.state.todos.splice(index, 1, data);
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
 
     methods: {
         changeFilter(filter) {
-            this.filter = filter;
+            this.$store.state.filter = filter;
             eventBus.$emit('filterChanged', filter);
         }
     }
