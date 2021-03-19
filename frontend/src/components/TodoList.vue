@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
 
     </todo-item>
 
@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem'
+import TodoItem from './TodoItem';
+import { eventBus } from  '../main';
 
 export default {
   name: 'todo-list',
@@ -67,6 +68,11 @@ export default {
         }
       ]
     }
+  },
+
+  created() {
+    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
   },
 
   computed: {
