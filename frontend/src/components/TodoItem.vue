@@ -8,13 +8,19 @@
       <input v-else class="todo-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
     </div>
 
-    <div class="remove-item" @click="removeTodo(todo.id)">
-      &times;
+    <div>
+      <button @click="pluralize">Plural</button>
+
+      <span class="remove-item" @click="removeTodo(todo.id)">
+        &times;
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import { eventBus } from  '../main';
+
 export default {
   name: 'todo-item',
 
@@ -40,6 +46,14 @@ export default {
     }
   },
 
+  created() {
+    eventBus.$on('pluralize', this.handlePluralize);
+  },
+
+  beforeDestroy() {
+    eventBus.$off('pluralize', this.handlePluralize);
+  },
+
   watch: {
     checkAll() {
       this.done = this.checkAll ? true : this.todo.done;
@@ -57,7 +71,7 @@ export default {
 
   methods: {
     removeTodo(id) {
-      this.$emit('removedTodo', id);
+      eventBus.$emit('removedTodo', id);
     },
 
     editTodo() {
@@ -71,7 +85,7 @@ export default {
       }
 
       this.editing = false;
-      this.$emit('finishedEdit', {
+      eventBus.$emit('finishedEdit', {
         'id': this.id,
         'title': this.title,
         'done': this.done,
@@ -82,6 +96,20 @@ export default {
     cancelEdit() {
       this.title = this.beforeEditCache;
       this.editing = false;
+    },
+
+    pluralize() {
+      eventBus.$emit('pluralize');
+    },
+
+    handlePluralize() {
+      this.title += 's';
+      eventBus.$emit('finishedEdit', {
+        'id': this.id,
+        'title': this.title,
+        'done': this.done,
+        'editing': this.editing
+      });
     }
   }
 }

@@ -1,48 +1,43 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
 
     </todo-item>
 
     <div class="extra-container">
-      <div>
-        <label>
-          <input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos">
-          Check All
-        </label>
-      </div>
+      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
 
-      <div>
-        {{ remaining }} items left
-      </div>
+      <todo-items-remaining :remaining="remaining"></todo-items-remaining>
     </div>
 
     <div class="extra-container">
-     <div>
-       <button :class="{ active: filter == 'all' }" @click="filter = 'all'">All</button>
-       <button :class="{ active: filter == 'active' }" @click="filter = 'active'">Active</button>
-       <button :class="{ active: filter == 'done' }" @click="filter = 'done'">Completed</button>
-     </div>
+      <todo-filtered></todo-filtered>
 
      <div>
-       <button v-if="showClearDoneButton" @click="clearDone()">
-         Clear Done
-       </button>
+       <todo-clear-done :showClearDoneButton="showClearDoneButton"></todo-clear-done>
      </div>
-
    </div>
   </div>
 </template>
 
 <script>
-import TodoItem from './TodoItem'
+import TodoItem from './TodoItem';
+import TodoCheckAll from './TodoCheckAll';
+import TodoItemsRemaining from './TodoItemsRemaining';
+import TodoFiltered from './TodoFiltered';
+import TodoClearDone from './TodoClearDone';
+import { eventBus } from  '../main';
 
 export default {
   name: 'todo-list',
 
   components: {
-    TodoItem
+    TodoItem,
+    TodoCheckAll,
+    TodoItemsRemaining,
+    TodoFiltered,
+    TodoClearDone
   },
 
   data() {
@@ -67,6 +62,22 @@ export default {
         }
       ]
     }
+  },
+
+  created() {
+    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
+    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
+    eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
+    eventBus.$on('filterChanged', (filter) => this.filter = filter);
+    eventBus.$on('clearDoneTodos', () => this.clearDone());
+  },
+
+  beforeDestroy() {
+    eventBus.$off('removedTodo', (index) => this.removeTodo(index));
+    eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
+    eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
+    eventBus.$off('filterChanged', (filter) => this.filter = filter);
+    eventBus.$off('clearDoneTodos', () => this.clearDone());
   },
 
   computed: {
