@@ -40,6 +40,21 @@ export default {
     }
   },
 
+  watch: {
+    checkAll() {
+      this.done = this.checkAll ? true : this.todo.done;
+    }
+  },
+
+  directives: {
+    focus: {
+      // directive definition
+      inserted: function (el) {
+        el.focus()
+      }
+    }
+  },
+
   methods: {
     removeTodo(id) {
       this.$emit('removedTodo', id);

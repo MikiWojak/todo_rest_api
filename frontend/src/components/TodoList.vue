@@ -95,15 +95,6 @@ export default {
     }
   },
 
-  directives: {
-    focus: {
-      // directive definition
-      inserted: function (el) {
-        el.focus()
-      }
-    }
-  },
-
   methods: {
     addTodo() {
       //Title is empty
@@ -120,24 +111,6 @@ export default {
 
       this.newTodo = '';
       this.idForTodo++;
-    },
-
-    editTodo(todo) {
-      this.beforeEditCache = todo.title;
-      todo.editing = true;
-    },
-
-    doneEdit(todo) {
-      if(todo.title.trim() == '') {
-        todo.title = this.beforeEditCache;
-      }
-
-      todo.editing = false;
-    },
-
-    cancelEdit(todo) {
-      todo.title = this.beforeEditCache;
-      todo.editing = false;
     },
 
     removeTodo(id) {
@@ -211,7 +184,7 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
   }
 
-  &:focus {
+  .todo-item-edit:focus {
       outline: none;
   }
 
