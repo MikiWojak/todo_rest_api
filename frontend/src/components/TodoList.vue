@@ -12,11 +12,7 @@
     </div>
 
     <div class="extra-container">
-     <div>
-       <button :class="{ active: filter == 'all' }" @click="filter = 'all'">All</button>
-       <button :class="{ active: filter == 'active' }" @click="filter = 'active'">Active</button>
-       <button :class="{ active: filter == 'done' }" @click="filter = 'done'">Completed</button>
-     </div>
+      <todo-filtered></todo-filtered>
 
      <div>
        <button v-if="showClearDoneButton" @click="clearDone()">
@@ -32,6 +28,7 @@
 import TodoItem from './TodoItem';
 import TodoCheckAll from './TodoCheckAll';
 import TodoItemsRemaining from './TodoItemsRemaining';
+import TodoFiltered from './TodoFiltered';
 import { eventBus } from  '../main';
 
 export default {
@@ -40,7 +37,8 @@ export default {
   components: {
     TodoItem,
     TodoCheckAll,
-    TodoItemsRemaining
+    TodoItemsRemaining,
+    TodoFiltered
   },
 
   data() {
@@ -71,6 +69,7 @@ export default {
     eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
+    eventBus.$on('filterChanged', (filter) => this.filter = filter);
   },
 
   computed: {
