@@ -27,7 +27,7 @@ import TodoCheckAll from './TodoCheckAll';
 import TodoItemsRemaining from './TodoItemsRemaining';
 import TodoFiltered from './TodoFiltered';
 import TodoClearDone from './TodoClearDone';
-import { eventBus } from  '../main';
+// import { eventBus } from  '../main';
 
 export default {
   name: 'todo-list',
@@ -64,22 +64,6 @@ export default {
     }
   },
 
-  created() {
-    // eventBus.$on('removedTodo', (index) => this.removeTodo(index));
-    // eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
-    eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
-    eventBus.$on('clearDoneTodos', () => this.clearDone());
-  },
-
-  beforeDestroy() {
-    // eventBus.$off('removedTodo', (index) => this.removeTodo(index));
-    // eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
-    eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter);
-    eventBus.$off('clearDoneTodos', () => this.clearDone());
-  },
-
   computed: {
     remaining() {
       return this.$store.getters.remaining;
@@ -105,33 +89,13 @@ export default {
         return;
       }
 
-      this.$store.state.todos.push({
+      this.$store.commit('addTodo', {
         id: this.idForTodo,
         title: this.newTodo,
-        done: false,
-        editing: false
       });
 
       this.newTodo = '';
       this.idForTodo++;
-    },
-
-    // removeTodo(id) {
-    //   const index = this.$store.state.todos.findIndex((item) => item.id == id);
-    //   this.$store.state.todos.splice(index, 1);
-    // },
-
-    checkAllTodos() {
-      this.$store.state.todos.forEach((todo) => todo.done = event.target.checked);
-    },
-
-    clearDone() {
-      this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.done);
-    },
-
-    finishedEdit(data) {
-      const index = this.$store.state.todos.findIndex((item) => item.id == data.id);
-      this.$store.state.todos.splice(index, 1, data);
     }
   }
 }

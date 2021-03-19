@@ -47,5 +47,28 @@ export const store = new Vuex.Store({
         showClearDoneButton(state) {
             return state.todos.filter(todo => todo.done).length > 0;
         }
+    },
+
+    mutations: {
+        addTodo(state, todo) {
+            state.todos.push({
+                id: todo.id,
+                title: todo.title,
+                done: false,
+                editing: false
+            });
+        },
+
+        checkAll(state, checked) {
+            state.todos.forEach((todo) => todo.done = checked);
+        },
+
+        clearDone(state) {
+            state.todos = state.todos.filter(todo => !todo.done);
+        },
+
+        updateFilter(state, filter) {
+            state.filter = filter;
+        }
     }
 });

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { eventBus } from  '../main';
+// import { eventBus } from  '../main';
 
 export default {
     name: 'todo-filtered',
@@ -20,7 +20,7 @@ export default {
 
     methods: {
         changeFilter(filter) {
-            this.$store.state.filter = filter;
+            this.$store.commit('updateFilter', filter);
         }
     }
 }

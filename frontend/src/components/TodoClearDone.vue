@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { eventBus } from '../main'
+// import { eventBus } from '../main'
 export default {
     name: 'todo-clear-done',
 
@@ -17,7 +17,7 @@ export default {
 
     methods: {
         clearDone() {
-            this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.done);
+            this.$store.commit('clearDone');
         }
     }
 }
