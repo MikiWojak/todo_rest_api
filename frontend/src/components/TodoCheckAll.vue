@@ -8,21 +8,20 @@
 </template>
 
 <script>
-import { eventBus } from  '../main';
+// import { eventBus } from  '../main';
 
 export default {
     name: 'todo-check-all',
 
-    props: {
-        anyRemaining: {
-            type: Boolean,
-            required: true
+    computed: {
+        anyRemaining() {
+            return this.$store.getters.anyRemaining;
         }
     },
 
     methods: {
         allChecked() {
-            eventBus.$emit('checkAllChanged', this.anyRemaining);
+            this.$store.state.todos.forEach((todo) => todo.done = event.target.checked);
         }
     }
 }

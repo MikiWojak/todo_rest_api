@@ -6,7 +6,7 @@
     </todo-item>
 
     <div class="extra-container">
-      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
+      <todo-check-all></todo-check-all>
 
       <todo-items-remaining></todo-items-remaining>
     </div>
@@ -15,7 +15,7 @@
       <todo-filtered></todo-filtered>
 
      <div>
-       <todo-clear-done :showClearDoneButton="showClearDoneButton"></todo-clear-done>
+       <todo-clear-done></todo-clear-done>
      </div>
    </div>
   </div>
@@ -66,7 +66,7 @@ export default {
 
   created() {
     // eventBus.$on('removedTodo', (index) => this.removeTodo(index));
-    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
+    // eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
     eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
     eventBus.$on('clearDoneTodos', () => this.clearDone());
@@ -74,7 +74,7 @@ export default {
 
   beforeDestroy() {
     // eventBus.$off('removedTodo', (index) => this.removeTodo(index));
-    eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
+    // eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
     eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter);
     eventBus.$off('clearDoneTodos', () => this.clearDone());

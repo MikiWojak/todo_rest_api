@@ -9,16 +9,15 @@ import { eventBus } from '../main'
 export default {
     name: 'todo-clear-done',
 
-    props: {
-        showClearDoneButton: {
-            type: Boolean,
-            required: true
+    computed: {
+        showClearDoneButton() {
+            return this.$store.getters.showClearDoneButton;
         }
     },
 
     methods: {
         clearDone() {
-            eventBus.$emit('clearDoneTodos');
+            this.$store.state.todos = this.$store.state.todos.filter(todo => !todo.done);
         }
     }
 }
