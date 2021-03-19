@@ -15,11 +15,8 @@
       <todo-filtered></todo-filtered>
 
      <div>
-       <button v-if="showClearDoneButton" @click="clearDone()">
-         Clear Done
-       </button>
+       <todo-clear-done :showClearDoneButton="showClearDoneButton"></todo-clear-done>
      </div>
-
    </div>
   </div>
 </template>
@@ -29,6 +26,7 @@ import TodoItem from './TodoItem';
 import TodoCheckAll from './TodoCheckAll';
 import TodoItemsRemaining from './TodoItemsRemaining';
 import TodoFiltered from './TodoFiltered';
+import TodoClearDone from './TodoClearDone';
 import { eventBus } from  '../main';
 
 export default {
@@ -38,7 +36,8 @@ export default {
     TodoItem,
     TodoCheckAll,
     TodoItemsRemaining,
-    TodoFiltered
+    TodoFiltered,
+    TodoClearDone
   },
 
   data() {
@@ -70,6 +69,15 @@ export default {
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
     eventBus.$on('filterChanged', (filter) => this.filter = filter);
+    eventBus.$on('clearDoneTodos', () => this.clearDone());
+  },
+
+  beforeDestroy() {
+    eventBus.$off('removedTodo', (index) => this.removeTodo(index));
+    eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
+    eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
+    eventBus.$off('filterChanged', (filter) => this.filter = filter);
+    eventBus.$off('clearDoneTodos', () => this.clearDone());
   },
 
   computed: {
