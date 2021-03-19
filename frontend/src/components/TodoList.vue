@@ -65,7 +65,7 @@ export default {
   },
 
   created() {
-    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
+    // eventBus.$on('removedTodo', (index) => this.removeTodo(index));
     eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
     eventBus.$on('filterChanged', (filter) => this.$store.state.filter = filter);
@@ -73,7 +73,7 @@ export default {
   },
 
   beforeDestroy() {
-    eventBus.$off('removedTodo', (index) => this.removeTodo(index));
+    // eventBus.$off('removedTodo', (index) => this.removeTodo(index));
     eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
     eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
     eventBus.$off('filterChanged', (filter) => this.$store.state.filter = filter);
@@ -116,10 +116,10 @@ export default {
       this.idForTodo++;
     },
 
-    removeTodo(id) {
-      const index = this.$store.state.todos.findIndex((item) => item.id == id);
-      this.$store.state.todos.splice(index, 1);
-    },
+    // removeTodo(id) {
+    //   const index = this.$store.state.todos.findIndex((item) => item.id == id);
+    //   this.$store.state.todos.splice(index, 1);
+    // },
 
     checkAllTodos() {
       this.$store.state.todos.forEach((todo) => todo.done = event.target.checked);
