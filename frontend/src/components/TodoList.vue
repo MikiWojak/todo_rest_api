@@ -1,19 +1,9 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todosFiltered"  :key="todo.id" class="todo-item">
-      <div class="todo-item-left">
-        <input type="checkbox" v-model="todo.done">
-        <div v-if="!todo.editing" class="todo-item-label" :class="{ completed: todo.done }" @dblclick="editTodo(todo)">
-          {{ todo.title }}
-        </div>
-        <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
-      </div>
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining" @removedTodo="removeTodo" @finishedEdit="finishedEdit">
 
-      <div class="remove-item" @click="removeTodo(index)">
-        &times;
-      </div>
-    </div>
+    </todo-item>
 
     <div class="extra-container">
       <div>
@@ -46,8 +36,14 @@
 </template>
 
 <script>
+import TodoItem from './TodoItem'
+
 export default {
   name: 'todo-list',
+
+  components: {
+    TodoItem
+  },
 
   data() {
     return {
@@ -99,15 +95,6 @@ export default {
     }
   },
 
-  directives: {
-    focus: {
-      // directive definition
-      inserted: function (el) {
-        el.focus()
-      }
-    }
-  },
-
   methods: {
     addTodo() {
       //Title is empty
@@ -126,25 +113,8 @@ export default {
       this.idForTodo++;
     },
 
-    editTodo(todo) {
-      this.beforeEditCache = todo.title;
-      todo.editing = true;
-    },
-
-    doneEdit(todo) {
-      if(todo.title.trim() == '') {
-        todo.title = this.beforeEditCache;
-      }
-
-      todo.editing = false;
-    },
-
-    cancelEdit(todo) {
-      todo.title = this.beforeEditCache;
-      todo.editing = false;
-    },
-
-    removeTodo(index) {
+    removeTodo(id) {
+      const index = this.todos.findIndex((item) => item.id == id);
       this.todos.splice(index, 1);
     },
 
@@ -154,8 +124,13 @@ export default {
 
     clearDone() {
       this.todos = this.todos.filter(todo => !todo.done);
+    },
+
+    finishedEdit(data) {
+      const index = this.todos.findIndex((item) => item.id == data.id);
+      this.todos.splice(index, 1, data);
     }
-  },
+  }
 }
 </script>
 
@@ -209,7 +184,7 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
   }
 
-  &:focus {
+  .todo-item-edit:focus {
       outline: none;
   }
 
