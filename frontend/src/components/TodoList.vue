@@ -1,42 +1,20 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
+    <todo-item v-for="todo in todos" :key="todo.id" :todo="todo">
 
     </todo-item>
-
-    <div class="extra-container">
-      <todo-check-all></todo-check-all>
-
-      <todo-items-remaining></todo-items-remaining>
-    </div>
-
-    <div class="extra-container">
-      <todo-filtered></todo-filtered>
-
-     <div>
-       <todo-clear-done></todo-clear-done>
-     </div>
-   </div>
   </div>
 </template>
 
 <script>
 import TodoItem from './TodoItem';
-import TodoCheckAll from './TodoCheckAll';
-import TodoItemsRemaining from './TodoItemsRemaining';
-import TodoFiltered from './TodoFiltered';
-import TodoClearDone from './TodoClearDone';
 
 export default {
   name: 'todo-list',
 
   components: {
     TodoItem,
-    TodoCheckAll,
-    TodoItemsRemaining,
-    TodoFiltered,
-    TodoClearDone
   },
 
   data() {
@@ -47,12 +25,8 @@ export default {
   },
 
   computed: {
-    anyRemaining() {
-      return this.$store.getters.anyRemaining;
-    },
-
-    todosFiltered() {
-      return this.$store.getters.todosFiltered;
+    todos() {
+      return this.$store.state.todos;
     }
   },
 
@@ -132,33 +106,5 @@ export default {
   .completed {
     text-decoration: line-through;
     color: grey;
-  }
-
-  .extra-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
-    border-top: 1px solid lightgrey;
-    padding-top: 14px;
-    margin-bottom: 14px;
-  }
-
-  button {
-    font-size: 14px;
-    background-color: white;
-    appearance: none;
-  }
-
-  button:hover {
-    background: lightgreen;
-  }
-
-  button:focus {
-    outline: none;
-  }
-
-  .active {
-    background: lightgreen;
   }
 </style>
