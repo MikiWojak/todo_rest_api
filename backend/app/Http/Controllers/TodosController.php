@@ -18,16 +18,6 @@ class TodosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -35,29 +25,14 @@ class TodosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'title' => 'required|string',
+            'done' => 'required|boolean'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Todo $todo)
-    {
-        //
-    }
+        $todo = Todo::create($data);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Todo $todo)
-    {
-        //
+        return response($todo, 201);
     }
 
     /**
@@ -69,7 +44,14 @@ class TodosController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string',
+            'done' => 'required|boolean'
+        ]);
+
+        $todo->update($data);
+
+        return response($todo, 200);
     }
 
     /**
@@ -80,6 +62,8 @@ class TodosController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+
+        return response('Deleted Todo item', 200);
     }
 }
