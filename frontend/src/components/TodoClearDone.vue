@@ -17,7 +17,7 @@ export default {
 
     methods: {
         clearDone() {
-            this.$store.commit('clearDone');
+            this.$store.dispatch('clearDone');
         }
     }
 }
