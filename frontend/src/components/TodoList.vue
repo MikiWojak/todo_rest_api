@@ -27,7 +27,6 @@ import TodoCheckAll from './TodoCheckAll';
 import TodoItemsRemaining from './TodoItemsRemaining';
 import TodoFiltered from './TodoFiltered';
 import TodoClearDone from './TodoClearDone';
-// import { eventBus } from  '../main';
 
 export default {
   name: 'todo-list',
@@ -43,42 +42,17 @@ export default {
   data() {
     return {
       newTodo: '',
-      idForTodo: 3,
-      beforeEditCache: '',
-      filter: 'all',
-
-      todos: [
-        {
-          'id': 1,
-          'title': 'Finish Vue Screencast',
-          'done': false,
-          'editing': false
-        },
-        {
-          'id': 2,
-          'title': 'Take over world',
-          'done': false,
-          'editing': false
-        }
-      ]
+      idForTodo: 3
     }
   },
 
   computed: {
-    remaining() {
-      return this.$store.getters.remaining;
-    },
-
     anyRemaining() {
       return this.$store.getters.anyRemaining;
     },
 
     todosFiltered() {
       return this.$store.getters.todosFiltered;
-    },
-
-    showClearDoneButton() {
-      return this.$store.getters.showClearDoneButton;
     }
   },
 

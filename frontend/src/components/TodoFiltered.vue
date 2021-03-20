@@ -7,8 +7,6 @@
 </template>
 
 <script>
-// import { eventBus } from  '../main';
-
 export default {
     name: 'todo-filtered',
 

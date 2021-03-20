@@ -90,13 +90,6 @@ export default {
         'done': this.done,
         'editing': this.editing
       });
-
-      // eventBus.$emit('finishedEdit', {
-      //   'id': this.id,
-      //   'title': this.title,
-      //   'done': this.done,
-      //   'editing': this.editing
-      // });
     },
 
     cancelEdit() {
