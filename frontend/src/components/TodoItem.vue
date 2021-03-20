@@ -71,8 +71,7 @@ export default {
 
   methods: {
     removeTodo(id) {
-      const index = this.$store.state.todos.findIndex((item) => item.id == id);
-      this.$store.state.todos.splice(index, 1);
+      this.$store.commit('deleteTodo', id);
     },
 
     editTodo() {
@@ -85,9 +84,7 @@ export default {
         this.title = this.beforeEditCache;
       }
       this.editing = false;
-
-      const index = this.$store.state.todos.findIndex((item) => item.id == this.id);
-      this.$store.state.todos.splice(index, 1, {
+      this.$store.commit('updateTodo', {
         'id': this.id,
         'title': this.title,
         'done': this.done,
