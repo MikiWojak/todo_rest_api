@@ -24,6 +24,10 @@ export default {
     }
   },
 
+  created() {
+    this.$store.dispatch('retrieveTodos');
+  },
+
   computed: {
     todos() {
       return this.$store.state.todos;
