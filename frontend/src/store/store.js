@@ -5,8 +5,6 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        filter: 'all',
-        
         todos: [
             {
                 'id': 1,
@@ -30,22 +28,6 @@ export const store = new Vuex.Store({
     
         anyRemaining(state, getters) {
             return getters.remaining != 0;
-        },
-    
-        todosFiltered(state) {
-            if(state.filter == 'all') {
-                return state.todos;
-            } else if(state.filter == 'active') {
-                return state.todos.filter(todo => !todo.done);
-            } else if(state.filter == 'done') {
-                return state.todos.filter(todo => todo.done);
-            }
-        
-            return state.todos;
-        },
-    
-        showClearDoneButton(state) {
-            return state.todos.filter(todo => todo.done).length > 0;
         }
     },
 
@@ -76,14 +58,6 @@ export const store = new Vuex.Store({
 
         checkAll(state, checked) {
             state.todos.forEach((todo) => todo.done = checked);
-        },
-
-        clearDone(state) {
-            state.todos = state.todos.filter(todo => !todo.done);
-        },
-
-        updateFilter(state, filter) {
-            state.filter = filter;
         }
     },
 
@@ -103,14 +77,6 @@ export const store = new Vuex.Store({
 
         checkAll(context, checked) {
             context.commit('checkAll', checked);
-        },
-
-        clearDone(context) {
-            context.commit('clearDone');
-        },
-
-        updateFilter(context, filter) {
-            context.commit('updateFilter', filter);
         }
     }
 });

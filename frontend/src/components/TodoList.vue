@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
+    <todo-item v-for="todo in todos" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
 
     </todo-item>
 
@@ -10,14 +10,6 @@
 
       <todo-items-remaining></todo-items-remaining>
     </div>
-
-    <div class="extra-container">
-      <todo-filtered></todo-filtered>
-
-     <div>
-       <todo-clear-done></todo-clear-done>
-     </div>
-   </div>
   </div>
 </template>
 
@@ -25,8 +17,6 @@
 import TodoItem from './TodoItem';
 import TodoCheckAll from './TodoCheckAll';
 import TodoItemsRemaining from './TodoItemsRemaining';
-import TodoFiltered from './TodoFiltered';
-import TodoClearDone from './TodoClearDone';
 
 export default {
   name: 'todo-list',
@@ -34,9 +24,7 @@ export default {
   components: {
     TodoItem,
     TodoCheckAll,
-    TodoItemsRemaining,
-    TodoFiltered,
-    TodoClearDone
+    TodoItemsRemaining
   },
 
   data() {
@@ -51,8 +39,8 @@ export default {
       return this.$store.getters.anyRemaining;
     },
 
-    todosFiltered() {
-      return this.$store.getters.todosFiltered;
+    todos() {
+      return this.$store.state.todos;
     }
   },
 
