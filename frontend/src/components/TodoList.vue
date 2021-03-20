@@ -107,32 +107,4 @@ export default {
     text-decoration: line-through;
     color: grey;
   }
-
-  .extra-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
-    border-top: 1px solid lightgrey;
-    padding-top: 14px;
-    margin-bottom: 14px;
-  }
-
-  button {
-    font-size: 14px;
-    background-color: white;
-    appearance: none;
-  }
-
-  button:hover {
-    background: lightgreen;
-  }
-
-  button:focus {
-    outline: none;
-  }
-
-  .active {
-    background: lightgreen;
-  }
 </style>

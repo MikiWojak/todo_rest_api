@@ -61,7 +61,6 @@ export const store = new Vuex.Store({
 
         deleteTodo(context, id) {
             context.commit('deleteTodo', id);
-
         }
     }
 });

@@ -9,8 +9,6 @@
     </div>
 
     <div>
-      <button @click="pluralize">Plural</button>
-
       <span class="remove-item" @click="removeTodo(todo.id)">
         &times;
       </span>
@@ -19,8 +17,6 @@
 </template>
 
 <script>
-import { eventBus } from  '../main';
-
 export default {
   name: 'todo-item',
 
@@ -39,14 +35,6 @@ export default {
       'editing': this.todo.editing,
       'beforeEditCache': ''
     }
-  },
-
-  created() {
-    eventBus.$on('pluralize', this.handlePluralize);
-  },
-
-  beforeDestroy() {
-    eventBus.$off('pluralize', this.handlePluralize);
   },
 
   directives: {
@@ -84,21 +72,6 @@ export default {
     cancelEdit() {
       this.title = this.beforeEditCache;
       this.editing = false;
-    },
-
-    pluralize() {
-      eventBus.$emit('pluralize');
-    },
-
-    handlePluralize() {
-      this.title += 's';
-      const index = this.$store.state.todos.findIndex((item) => item.id == this.id);
-      this.$store.state.todos.splice(index, 1, {
-        'id': this.id,
-        'title': this.title,
-        'done': this.done,
-        'editing': this.editing
-      });
     }
   }
 }
