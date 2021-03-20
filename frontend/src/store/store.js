@@ -22,13 +22,6 @@ export const store = new Vuex.Store({
     },
 
     getters: {
-        remaining(state) {
-            return state.todos.filter(todo => !todo.done).length;
-        },
-    
-        anyRemaining(state, getters) {
-            return getters.remaining != 0;
-        }
     },
 
     mutations: {
@@ -54,10 +47,6 @@ export const store = new Vuex.Store({
         deleteTodo(state, id) {
             const index = state.todos.findIndex((item) => item.id == id);
             state.todos.splice(index, 1);
-        },
-
-        checkAll(state, checked) {
-            state.todos.forEach((todo) => todo.done = checked);
         }
     },
 
@@ -73,10 +62,6 @@ export const store = new Vuex.Store({
         deleteTodo(context, id) {
             context.commit('deleteTodo', id);
 
-        },
-
-        checkAll(context, checked) {
-            context.commit('checkAll', checked);
         }
     }
 });

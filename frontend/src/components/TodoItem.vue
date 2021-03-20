@@ -28,11 +28,6 @@ export default {
     todo: {
       type: Object,
       required: true
-    },
-
-    checkAll: {
-      type: Boolean,
-      required: true
     }
   },
 
@@ -52,12 +47,6 @@ export default {
 
   beforeDestroy() {
     eventBus.$off('pluralize', this.handlePluralize);
-  },
-
-  watch: {
-    checkAll() {
-      this.done = this.checkAll ? true : this.todo.done;
-    }
   },
 
   directives: {
