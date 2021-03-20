@@ -9,8 +9,6 @@
     </div>
 
     <div>
-      <button @click="pluralize">Plural</button>
-
       <span class="remove-item" @click="removeTodo(todo.id)">
         &times;
       </span>
@@ -19,19 +17,12 @@
 </template>
 
 <script>
-import { eventBus } from  '../main';
-
 export default {
   name: 'todo-item',
 
   props: {
     todo: {
       type: Object,
-      required: true
-    },
-
-    checkAll: {
-      type: Boolean,
       required: true
     }
   },
@@ -46,20 +37,6 @@ export default {
     }
   },
 
-  created() {
-    eventBus.$on('pluralize', this.handlePluralize);
-  },
-
-  beforeDestroy() {
-    eventBus.$off('pluralize', this.handlePluralize);
-  },
-
-  watch: {
-    checkAll() {
-      this.done = this.checkAll ? true : this.todo.done;
-    }
-  },
-
   directives: {
     focus: {
       // directive definition
@@ -71,7 +48,7 @@ export default {
 
   methods: {
     removeTodo(id) {
-      eventBus.$emit('removedTodo', id);
+      this.$store.dispatch('deleteTodo', id);
     },
 
     editTodo() {
@@ -83,9 +60,8 @@ export default {
       if(this.title.trim() == '') {
         this.title = this.beforeEditCache;
       }
-
       this.editing = false;
-      eventBus.$emit('finishedEdit', {
+      this.$store.dispatch('updateTodo', {
         'id': this.id,
         'title': this.title,
         'done': this.done,
@@ -96,20 +72,6 @@ export default {
     cancelEdit() {
       this.title = this.beforeEditCache;
       this.editing = false;
-    },
-
-    pluralize() {
-      eventBus.$emit('pluralize');
-    },
-
-    handlePluralize() {
-      this.title += 's';
-      eventBus.$emit('finishedEdit', {
-        'id': this.id,
-        'title': this.title,
-        'done': this.done,
-        'editing': this.editing
-      });
     }
   }
 }

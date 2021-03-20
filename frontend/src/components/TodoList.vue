@@ -1,108 +1,32 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
+    <todo-item v-for="todo in todos" :key="todo.id" :todo="todo">
 
     </todo-item>
-
-    <div class="extra-container">
-      <todo-check-all :anyRemaining="anyRemaining"></todo-check-all>
-
-      <todo-items-remaining :remaining="remaining"></todo-items-remaining>
-    </div>
-
-    <div class="extra-container">
-      <todo-filtered></todo-filtered>
-
-     <div>
-       <todo-clear-done :showClearDoneButton="showClearDoneButton"></todo-clear-done>
-     </div>
-   </div>
   </div>
 </template>
 
 <script>
 import TodoItem from './TodoItem';
-import TodoCheckAll from './TodoCheckAll';
-import TodoItemsRemaining from './TodoItemsRemaining';
-import TodoFiltered from './TodoFiltered';
-import TodoClearDone from './TodoClearDone';
-import { eventBus } from  '../main';
 
 export default {
   name: 'todo-list',
 
   components: {
     TodoItem,
-    TodoCheckAll,
-    TodoItemsRemaining,
-    TodoFiltered,
-    TodoClearDone
   },
 
   data() {
     return {
       newTodo: '',
-      idForTodo: 3,
-      beforeEditCache: '',
-      filter: 'all',
-
-      todos: [
-        {
-          'id': 1,
-          'title': 'Finish Vue Screencast',
-          'done': false,
-          'editing': false
-        },
-        {
-          'id': 2,
-          'title': 'Take over world',
-          'done': false,
-          'editing': false
-        }
-      ]
+      idForTodo: 3
     }
   },
 
-  created() {
-    eventBus.$on('removedTodo', (index) => this.removeTodo(index));
-    eventBus.$on('finishedEdit', (data) => this.finishedEdit(data));
-    eventBus.$on('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$on('filterChanged', (filter) => this.filter = filter);
-    eventBus.$on('clearDoneTodos', () => this.clearDone());
-  },
-
-  beforeDestroy() {
-    eventBus.$off('removedTodo', (index) => this.removeTodo(index));
-    eventBus.$off('finishedEdit', (data) => this.finishedEdit(data));
-    eventBus.$off('checkAllChanged', (checked) => this.checkAllTodos(checked));
-    eventBus.$off('filterChanged', (filter) => this.filter = filter);
-    eventBus.$off('clearDoneTodos', () => this.clearDone());
-  },
-
   computed: {
-    remaining() {
-      return this.todos.filter(todo => !todo.done).length;
-    },
-
-    anyRemaining() {
-      return this.remaining != 0;
-    },
-
-    todosFiltered() {
-      if(this.filter == 'all') {
-        return this.todos;
-      } else if(this.filter == 'active') {
-        return this.todos.filter(todo => !todo.done);
-      } else if(this.filter == 'done') {
-        return this.todos.filter(todo => todo.done);
-      }
-
-      return this.todos;
-    },
-
-    showClearDoneButton() {
-      return this.todos.filter(todo => todo.done).length > 0;
+    todos() {
+      return this.$store.state.todos;
     }
   },
 
@@ -113,33 +37,13 @@ export default {
         return;
       }
 
-      this.todos.push({
+      this.$store.dispatch('addTodo', {
         id: this.idForTodo,
         title: this.newTodo,
-        done: false,
-        editing: false
       });
 
       this.newTodo = '';
       this.idForTodo++;
-    },
-
-    removeTodo(id) {
-      const index = this.todos.findIndex((item) => item.id == id);
-      this.todos.splice(index, 1);
-    },
-
-    checkAllTodos() {
-      this.todos.forEach((todo) => todo.done = event.target.checked);
-    },
-
-    clearDone() {
-      this.todos = this.todos.filter(todo => !todo.done);
-    },
-
-    finishedEdit(data) {
-      const index = this.todos.findIndex((item) => item.id == data.id);
-      this.todos.splice(index, 1, data);
     }
   }
 }
@@ -202,33 +106,5 @@ export default {
   .completed {
     text-decoration: line-through;
     color: grey;
-  }
-
-  .extra-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
-    border-top: 1px solid lightgrey;
-    padding-top: 14px;
-    margin-bottom: 14px;
-  }
-
-  button {
-    font-size: 14px;
-    background-color: white;
-    appearance: none;
-  }
-
-  button:hover {
-    background: lightgreen;
-  }
-
-  button:focus {
-    outline: none;
-  }
-
-  .active {
-    background: lightgreen;
   }
 </style>
