@@ -1,5 +1,5 @@
 <template>
     <div class="flex-center">
-        Register
+        There should be a register form
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
     <div class="flex-center">
-        Login
+        There should be a login form
     </div>
 </template>
