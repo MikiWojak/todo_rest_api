@@ -15,7 +15,7 @@
 - `cd frontend` - Go to folder with frontend client
 - `npm install` - Install components for frontend
 - `npm run serve` - Run frontend client
-- `http://localhost:8080` - Default address of the Client
+- `http://localhost:8080` - Default address of the Client. Go there
 
 ## How to use
 - The TODO is on the main site
