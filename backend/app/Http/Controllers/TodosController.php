@@ -48,7 +48,7 @@ class TodosController extends Controller
             'title' => 'required|string',
             'done' => 'required|boolean'
         ]);
-
+        
         $todo->update($data);
 
         return response($todo, 200);
