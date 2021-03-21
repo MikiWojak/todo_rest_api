@@ -15,6 +15,27 @@
 - `npm install` - Install components for frontend
 - `npm run serve` - Run frontend client
 
+## How to use
+- The TODO is on the main site
+- Go to option 'App'
+
+### Adding
+- Write name of task
+- Click Enter to save
+- Click Esc or elsewhere to cancel
+
+### Updating
+- Double-click on the task
+- Modify the title
+- Click Enter to save changes
+- Click Esc or elsewhere to cancel
+
+### Delete
+- Click 'X' on the right of the task
+
+### Dane task
+- Check the checkbox on the left of the task
+
 ## Environment of work
 
 ### Operating system
