@@ -9,11 +9,13 @@
 - `composer install` - Install laravel packages
 - `php artisan migrate` - Create tables in the database
 - `php artisan serve` - Run backend client
+- `http://localhost:8000` - Default address of the API
 
 ## Frontend
 - `cd frontend` - Go to folder with frontend client
 - `npm install` - Install components for frontend
 - `npm run serve` - Run frontend client
+- `http://localhost:8080` - Default address of the Client
 
 ## How to use
 - The TODO is on the main site
